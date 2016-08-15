@@ -18,6 +18,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String())
     password = db.Column(db.String())
+    note = db.Column(db.String())
+    sex = db.Column(db.String())
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
 
     todos = db.relationship('Todo', backref='user')
@@ -26,10 +28,20 @@ class User(db.Model):
         super(User, self).__init__()
         self.username = form.get('username', '')
         self.password = form.get('password', '')
+        self.sex = form.get('sex', '')
+        self.note = form.get('note', '')
 
     def __repr__(self):
         class_name = self.__class__.__name__
         return u'<{}:{}>'.format(class_name, self.id)
+
+    def json(self):
+        self.id
+        return {
+            'username': self.username,
+            'sex': self.sex,
+            'note': self.note,
+        }
 
     def save(self):
         db.session.add(self)
@@ -40,10 +52,22 @@ class User(db.Model):
         db.session.commit()
 
     def valid(self):
+        filter_username = User.query.filter_by(username=self.username).first()
+        valid_username = filter_username == None
         username_len = len(self.username) >= 3
         password_len = len(self.password) >= 3
-        password_check = self.password
-        return username_len and password_len and password_check
+        msgs = []
+        if not valid_username:
+            message = '用户名已经存在'
+            msgs.append(message)
+        elif not username_len:
+            message = '用户名长度必须大于等于 3'
+            msgs.append(message)
+        elif not password_len:
+            message = '密码长度必须大于等于 3'
+            msgs.append(message)
+        status = valid_username and username_len and password_len
+        return status, msgs
 
     def validate(self, user):
         if isinstance(user, User):
@@ -70,6 +94,7 @@ class Todo(db.Model):
         return u'<{}:{}>'.format(class_name, self.id)
 
     def json(self):
+        self.id
         return {
             'id': self.id,
             'content': self.content,

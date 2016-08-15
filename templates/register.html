@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <!--<meta name="description" content="">-->
+    <!--<meta name="author" content="Dashboard">-->
+    <!--<meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">-->
+
+    <title>TODO 注册</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <!--external css-->
+    <!--<link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet"/>-->
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/css/style-responsive.css" rel="stylesheet">
+
+    <!--<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+    <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+    <!--<script src="../static/js/jquery-3.0.0.min.js"></script>-->
+    <script>
+        $(document).ready(function(){
+                var button = $("#id-button-submit");
+                button.on('click', function(){
+                  var username = $('#id-text-username').val();
+                  var password = $('#id-text-password').val();
+                  var note = $('#id-text-note').val();
+                  var sex = $("input[type='radio']:checked").val();
+                  var account = {
+                    username: username,
+                    password: password,
+                    note: note,
+                    sex: sex
+                  };
+                  var postData = JSON.stringify(account);
+                  console.log('JSON发送', postData);
+                  var request = {
+                    url: '/register',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: postData,
+                    success: function(r) {
+                      if(r.success){
+                        console.log('注册成功');
+                        alert(r.message);
+                        window.location.href = r.url;
+                      } else {
+                        alert(r.message);
+                        window.location.href = r.url;
+                      }
+                    }
+                  };
+                  $.ajax(request);
+                }
+              )
+            }
+          )
+</script>
+
+
+</head>
+
+<body>
+
+<div>
+    <div class="container">
+        <form class="form-login" >
+            <h2 class="form-login-heading">register now</h2>
+            <div class="login-wrap">
+                <input type="text" class="form-control" id="id-text-username" placeholder="User ID">
+                <br>
+                <input type="text" class="form-control" id="id-text-password" placeholder="Password">
+                <br>
+                <input type="text" class="form-control" id="id-text-note" placeholder="Note">
+                <br>
+                <input type="radio" name="sex" value="male" checke="checked"> male
+                <input type="radio" name="sex" value="female"> female
+                <button class="btn btn-theme btn-block" id="id-button-submit" type="button">注册
+                </button>
+                <hr>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="../static/js/jquery.backstretch.min.js"></script>
+<script>
+    $.backstretch("../static/img/login-bg.jpg", {speed: 500});
+</script>
+
+</body>
+</html>

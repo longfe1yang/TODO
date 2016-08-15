@@ -36,10 +36,10 @@
     <script src="../static/js/jquery-3.0.0.min.js"></script>
 
     <script>
-        var tweetTemplate = function (todo) {
+        var todoTemplate = function (todo) {
             var t = todo;
-            var text = "测试";
-            var p = `
+            var text = t.content;
+            var tt = `
             <li>
                 <i class=" fa fa-ellipsis-v"></i>
                 <div class="task-checkbox">
@@ -54,11 +54,37 @@
                         <button class="btn btn-danger btn-xs fa fa-trash-o" title="删除"></button>
                     </div>
                 </div>
-            </li>`
+            </li>`;
+            return tt
         };
 
+        var insertTodos = function(articles){
+            for(var i = 0; i < articles.length; i++) {
+              var a = articles[i];
+              var t = todoTemplate(a);
+                console.log('这里是insertArticles', t);
+              $('#sortable').append(t);
+          }
+      };
+
+        var loadTodos = function(){
+            console.log('这里是loadTodos');
+
+            vip.articles(function(r){
+
+              if(r.success){
+                var todos = r.data;
+                  console.log('loadTodos r.data', r.data);
+                insertTodos(todos);
+              } else {
+                  alert(r.message);
+              }
+            });
+        };
 
         $(document).ready(function () {
+            // 这个用于显示打勾删除功能
+            loadTodos();
             TaskList.initTaskWidget();
 
         });
@@ -80,7 +106,7 @@
         <a href="#" class="logo"><b>T o d o</b></a>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="#">Logout</a></li>
+                <li><a class="logout" href="/logout">Logout</a></li>
             </ul>
         </div>
     </header>
