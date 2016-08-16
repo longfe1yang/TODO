@@ -42,10 +42,11 @@ def login():
     log('account', account)
     u = User(account)
     user = User.query.filter_by(username=u.username).first()
-    log('user', user)
+    log('user的id', user)
     r = {
         'success': True,
-        'url': '/timeline/{}'.format(u.username)
+        # 'url': '/timeline/{}'.format(user.id)
+        'url': '/timeline'
     }
     if u.validate(user):
         log(user.username, '登录成功')
@@ -73,7 +74,7 @@ def register():
     status, msgs = u.valid()
     if status:
         u.save()
-        r['message'] = '注册成功'
+        r['message'] = msgs
         log(r['message'])
     else:
         r['success'] = False
@@ -83,17 +84,26 @@ def register():
     return jsonify(r)
 
 
-@app.route('/timeline/<user_id>')
-def timeline_view(user_id):
-    user = current_user()
-    if user is not None:
+@app.route('/timeline/<user_id>', methods=['GET'])
+def timeline(user_id):
+        # todo 权限验证
         u = User.query.filter_by(id=user_id).first()
-        # todos = u.todos
-        # todos.sort(key=lambda t: t.created_time, reverse=True)
-        # return render_template('timeline.html', todos=todos, user=current_user())
-        return render_template('timeline.html',)
-    else:
-        abort(401)
+        # u = current_user()
+        log('timeline', u)
+        todos = u.todos
+        log('log', todos)
+        r = dict(
+            success=True,
+            data=[t.json() for t in todos]
+        )
+        log('debug r', r)
+        return jsonify(r)
+
+
+@app.route('/timeline')
+def timeline_view():
+    u = current_user()
+    return render_template('timeline.html', user=u)
 
 
 @app.route('/todo/add', methods=['POST'])

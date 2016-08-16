@@ -38,10 +38,14 @@ class User(db.Model):
     def json(self):
         self.id
         return {
-            'username': self.username,
-            'sex': self.sex,
-            'note': self.note,
+            k: v for k, v in self.__dict__.items() if k not in self.blacklist()
         }
+
+    def blacklist(self):
+        b = [
+            'password',
+        ]
+        return b
 
     def save(self):
         db.session.add(self)
@@ -96,11 +100,16 @@ class Todo(db.Model):
     def json(self):
         self.id
         return {
-            'id': self.id,
-            'content': self.content,
-            'created_time': self.created_time,
-            'user_id': self.user_id,
+            k: v for k, v in self.__dict__.items() if k not in self.blacklist()
         }
+
+    def blacklist(self):
+        b = [
+            'id',
+            'user_id',
+            '_sa_instance_state'
+        ]
+        return b
 
     def save(self):
         db.session.add(self)

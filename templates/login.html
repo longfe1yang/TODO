@@ -39,12 +39,9 @@
                 contentType: 'application/json',
                 data: postData,
                 success: function(r) {
-                  console.log('进入了success');
                   if(r.success) {
-                    console.log('成功');
                     window.location.href = r.url;
                   } else {
-                    console.log('失败');
                     window.location.href = r.url;
                   }
                 }
