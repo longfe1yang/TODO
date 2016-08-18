@@ -105,7 +105,6 @@ class Todo(db.Model):
 
     def blacklist(self):
         b = [
-            'id',
             'user_id',
             '_sa_instance_state'
         ]

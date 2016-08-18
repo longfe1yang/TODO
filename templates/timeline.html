@@ -38,12 +38,12 @@
 
     <script>
         window.g_userID = {{user.id}}
-        log('这是userid', g_userID);
         var todoTemplate = function (todo) {
             var t = todo;
             var text = t.content;
+            var id = t.id;
             var tt = `
-            <li>
+            <li data-id=${t.id} class="node">
                 <i class=" fa fa-ellipsis-v"></i>
                 <div class="task-checkbox">
                     <input type="checkbox" class="list-child" value=""/>
@@ -54,7 +54,7 @@
                     <div class="pull-right hidden-phone">
                         <!--<button class="btn btn-success btn-xs fa fa-check" title="完成"></button>-->
                         <button class="btn btn-primary btn-xs fa fa-pencil" title="编辑"></button>
-                        <button class="btn btn-danger btn-xs fa fa-trash-o" title="删除"></button>
+                        <button class="btn btn-danger btn-xs fa fa-trash-o long-button-delete" title="删除"></button>
                     </div>
                 </div>
             </li>`;
@@ -65,13 +65,13 @@
             for(var i = 0; i < todos.length; i++) {
               var a = todos[i];
               var t = todoTemplate(a);
-              console.log('这里是insertTodos', t);
+//              console.log('这里是insertTodos', t);
               $('#sortable').append(t);
           }
       };
 
         var loadTodos = function(){
-            console.log('这里是loadTodos');
+//            console.log('这里是loadTodos');
             vip.todos(function(r){
               if(r.success){
                 var todos = r.data;
@@ -81,12 +81,31 @@
                   alert(r.message);
               }
             }, g_userID);
+//            因为vip.todo这个是两个参数，一个response，一个是id
         };
+
+        var bindDeleteAction = function() {
+            $('ul#sortable').on('click', 'button.long-button-delete',function(){
+                log('this', $(this).data('id'));
+                $(this).closest('li').remove()
+                })};
+
+        var initTaskWidget = function() {
+            $('ul#sortable').on('click', 'input.list-child',function(){
+                if ($(this).is(':checked')) {
+                    $(this).parents('li').addClass("task-done");
+                } else {
+                    $(this).parents('li').removeClass("task-done");
+                }})};
+
 
         $(document).ready(function () {
             loadTodos();
-            // 这个用于显示打勾删除功能
-            TaskList.initTaskWidget();
+            console.log('bindDeleteAction ready');
+            bindDeleteAction();
+//          这个是显示删除线
+            initTaskWidget();
+
 
         });
 
@@ -145,21 +164,21 @@
                         <div class="panel-body">
                             <div class="task-content">
                                 <ul id="sortable" class="task-list">
-                                    <!--<li>-->
-                                        <!--<i class=" fa fa-ellipsis-v"></i>-->
-                                        <!--<div class="task-checkbox">-->
-                                            <!--<input type="checkbox" class="list-child" value=""/>-->
-                                        <!--</div>-->
-                                        <!--<div class="task-title">-->
-                                            <!--<span class="task-title-sp">list1</span>-->
-                                            <!--<span class="badge bg-theme">Done</span>-->
-                                            <!--<div class="pull-right hidden-phone">-->
-                                                <!--<button class="btn btn-success btn-xs fa fa-check" title="完成"></button>-->
-                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil" title="编辑"></button>-->
-                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o" title="删除"></button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</li>-->
+                                    <li id="id-li-list">
+                                        <i class=" fa fa-ellipsis-v"></i>
+                                        <div class="task-checkbox">
+                                            <input type="checkbox" class="list-child" value=""/>
+                                        </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp">list1</span>
+                                            <span class="badge bg-theme">Done</span>
+                                            <div class="pull-right hidden-phone">
+                                                <button class="btn btn-success btn-xs fa fa-check" title="完成"></button>
+                                                <button class="btn btn-primary btn-xs fa fa-pencil" title="编辑"></button>
+                                                <button class="btn btn-danger btn-xs fa fa-trash-o long-button-delete" title="删除" data-id="嗯哪"></button>
+                                            </div>
+                                        </div>
+                                    </li>
                                     <!--<li class="list-danger">-->
                                         <!--<i class=" fa fa-ellipsis-v"></i>-->
                                         <!--<div class="task-checkbox">-->
