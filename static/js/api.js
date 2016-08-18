@@ -75,12 +75,22 @@ vip.products = function(response) {
 //     this.get(path, response)
 // };
 
-vip.product_delete = function(product_id, response) {
-    var path = '/api/products/delete/' + product_id;
-    this.get(path, response);
-};
+// vip.product_delete = function(product_id, response) {
+//     var path = '/api/products/delete/' + product_id;
+//     this.get(path, response);
+// };
 // API articles
 vip.todos = function(response, id) {
     var path = '/timeline/' + id ;
     this.get(path, response);
 };
+
+vip.todoAdd = function(form, success, error){
+    var path = '/todo/add';
+    this.post(path, form, success, error)
+};
+//
+// vip.tweetAdd = function(form, success, error) {
+//     var url = '/api/tweet/add';
+//     this.post(url, form, success, error);
+// };

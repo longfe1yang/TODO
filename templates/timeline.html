@@ -71,7 +71,6 @@
       };
 
         var loadTodos = function(){
-//            console.log('这里是loadTodos');
             vip.todos(function(r){
               if(r.success){
                 var todos = r.data;
@@ -99,12 +98,30 @@
                 }})};
 
         var addTodos = function () {
-
+            $('#id-button-add').on('click', function() {
+                var form = {
+                'content': $('#id-text-add').val()
+            };
+                var success = function (r) {
+                    log('login, ', r);
+                    if(r.success) {
+                        var t = todoTemplate(r.data);
+                        $('#sortable').append(t);
+                        $('#id-text-add').val("")
+                    } else {
+                        log(r.message);
+                    }
+                };
+                var error = function (err) {
+                    log(err);
+                };
+                vip.todoAdd(form, success, error)
+            })
         };
 
         $(document).ready(function () {
             loadTodos();
-            console.log('bindDeleteAction ready');
+            addTodos();
             bindDeleteAction();
 //          这个是显示删除线
             initTaskWidget();
@@ -185,8 +202,8 @@
                                 </ul>
                             </div>
                             <div class=" add-task-row">
-                                <input class="fa-long-arrow-down pull-left"/>
-                                <button class="btn btn-success btn-sm">Add New Tasks</button>
+                                <input id="id-text-add" class="fa-long-arrow-down pull-left"/>
+                                <button id="id-button-add" class="btn btn-success btn-sm">Add New Tasks</button>
                             </div>
                         </div>
                     </section>

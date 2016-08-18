@@ -107,15 +107,22 @@ def timeline_view():
 
 
 @app.route('/todo/add', methods=['POST'])
-def todo_add():
+def tweet_add():
     user = current_user()
-    if user is None:
-        return redirect(url_for('login_view'))
-    else:
-        t = Todo(request.form)
-        t.user = user
-        t.save()
-        return redirect(url_for('timeline_view', username=user.username))
+    # if user is None:
+    #     return redirect(url_for('login_view'))
+    # else:
+    form = request.get_json()
+    t = Todo(form)
+    t.user = user
+    t.save()
+    j = t.json()
+    print('debug', j)
+    r = {
+        'success': True,
+        'data': j,
+    }
+    return jsonify(r)
 
 
 @app.route('/todo/update/<todo_id>')
