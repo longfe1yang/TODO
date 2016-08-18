@@ -75,13 +75,12 @@
             vip.todos(function(r){
               if(r.success){
                 var todos = r.data;
-                  console.log('loadTodos r.data', r.data);
                 insertTodos(todos);
               } else {
                   alert(r.message);
               }
             }, g_userID);
-//            因为vip.todo这个是两个参数，一个response，一个是id
+//            因为vip.todos这个是两个参数，一个response函数，一个是id
         };
 
         var bindDeleteAction = function() {
@@ -94,10 +93,14 @@
             $('ul#sortable').on('click', 'input.list-child',function(){
                 if ($(this).is(':checked')) {
                     $(this).parents('li').addClass("task-done");
+
                 } else {
                     $(this).parents('li').removeClass("task-done");
                 }})};
 
+        var addTodos = function () {
+
+        };
 
         $(document).ready(function () {
             loadTodos();
@@ -164,87 +167,26 @@
                         <div class="panel-body">
                             <div class="task-content">
                                 <ul id="sortable" class="task-list">
-                                    <li id="id-li-list">
-                                        <i class=" fa fa-ellipsis-v"></i>
-                                        <div class="task-checkbox">
-                                            <input type="checkbox" class="list-child" value=""/>
-                                        </div>
-                                        <div class="task-title">
-                                            <span class="task-title-sp">list1</span>
-                                            <span class="badge bg-theme">Done</span>
-                                            <div class="pull-right hidden-phone">
-                                                <button class="btn btn-success btn-xs fa fa-check" title="完成"></button>
-                                                <button class="btn btn-primary btn-xs fa fa-pencil" title="编辑"></button>
-                                                <button class="btn btn-danger btn-xs fa fa-trash-o long-button-delete" title="删除" data-id="嗯哪"></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!--<li class="list-danger">-->
+                                    <!--<li id="id-li-list">-->
                                         <!--<i class=" fa fa-ellipsis-v"></i>-->
                                         <!--<div class="task-checkbox">-->
                                             <!--<input type="checkbox" class="list-child" value=""/>-->
                                         <!--</div>-->
                                         <!--<div class="task-title">-->
                                             <!--<span class="task-title-sp">list1</span>-->
-                                            <!--&lt;!&ndash;<span class="badge bg-warning">Cool</span>&ndash;&gt;-->
+                                            <!--<span class="badge bg-theme">Done</span>-->
                                             <!--<div class="pull-right hidden-phone">-->
-                                                <!--<button class="btn btn-success btn-xs fa fa-check"></button>-->
-                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil"></button>-->
-                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o"></button>-->
+                                                <!--<button class="btn btn-success btn-xs fa fa-check" title="完成"></button>-->
+                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil" title="编辑"></button>-->
+                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o long-button-delete" title="删除" data-id="嗯哪"></button>-->
                                             <!--</div>-->
                                         <!--</div>-->
                                     <!--</li>-->
-                                    <!--<li class="list-success">-->
-                                        <!--<i class=" fa fa-ellipsis-v"></i>-->
-                                        <!--<div class="task-checkbox">-->
-                                            <!--<input type="checkbox" class="list-child" value=""/>-->
-                                        <!--</div>-->
-                                        <!--<div class="task-title">-->
-                                            <!--<span class="task-title-sp">Free updates always, no extra fees.</span>-->
-                                            <!--&lt;!&ndash;<span class="badge bg-success">2 Days</span>&ndash;&gt;-->
-                                            <!--<div class="pull-right hidden-phone">-->
-                                                <!--<button class="btn btn-success btn-xs fa fa-check"></button>-->
-                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil"></button>-->
-                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o"></button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li class="list-warning">-->
-                                        <!--<i class=" fa fa-ellipsis-v"></i>-->
-                                        <!--<div class="task-checkbox">-->
-                                            <!--<input type="checkbox" class="list-child" value=""/>-->
-                                        <!--</div>-->
-                                        <!--<div class="task-title">-->
-                                            <!--<span class="task-title-sp">More features coming soon</span>-->
-                                            <!--&lt;!&ndash;<span class="badge bg-info">Tomorrow</span>&ndash;&gt;-->
-                                            <!--<div class="pull-right hidden-phone">-->
-                                                <!--<button class="btn btn-success btn-xs fa fa-check"></button>-->
-                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil"></button>-->
-                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o"></button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li class="list-info">-->
-                                        <!--<i class=" fa fa-ellipsis-v"></i>-->
-                                        <!--<div class="task-checkbox">-->
-                                            <!--<input type="checkbox" class="list-child" value=""/>-->
-                                        <!--</div>-->
-                                        <!--<div class="task-title">-->
-                                            <!--<span class="task-title-sp">Hey, seriously, you should buy this Dashboard</span>-->
-                                            <!--&lt;!&ndash;<span class="badge bg-important">Now</span>&ndash;&gt;-->
-                                            <!--<div class="pull-right hidden-phone">-->
-                                                <!--<button class="btn btn-success btn-xs fa fa-check"></button>-->
-                                                <!--<button class="btn btn-primary btn-xs fa fa-pencil"></button>-->
-                                                <!--<button class="btn btn-danger btn-xs fa fa-trash-o"></button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-
                                 </ul>
                             </div>
                             <div class=" add-task-row">
-                                <a class="btn btn-success btn-sm pull-left" href="todo_list.html#">Add New Tasks</a>
-                                <a class="btn btn-default btn-sm pull-right" href="todo_list.html#">See All Tasks</a>
+                                <input class="fa-long-arrow-down pull-left"/>
+                                <button class="btn btn-success btn-sm">Add New Tasks</button>
                             </div>
                         </div>
                     </section>
@@ -258,7 +200,7 @@
     <footer class="site-footer">
         <div class="text-center">
             2014 - Alvarez.is
-            <a href="todo_list.html#" class="go-top">
+            <a href="http://127.0.0.1:5000/timeline" class="go-top">
                 <i class="fa fa-angle-up"></i>
             </a>
         </div>
