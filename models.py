@@ -74,12 +74,22 @@ class User(db.Model):
         return status, msgs
 
     def validate(self, user):
+        msgs = []
+        status = False
         if isinstance(user, User):
             username_equals = self.username == user.username
             password_equals = self.password == user.password
-            return username_equals and password_equals
+            message = '登录成功'
+            url = '/timeline'
+            status = username_equals and password_equals
+            # return username_equals and password_equals
         else:
-            return False
+            # return False
+            message = '请检查用户名或密码'
+            url = '/login'
+        msgs.append(message)
+
+        return status, msgs, url
 
 
 class Todo(db.Model):

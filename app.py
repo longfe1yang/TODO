@@ -43,17 +43,15 @@ def login():
     u = User(account)
     user = User.query.filter_by(username=u.username).first()
     log('user的id', user)
+    status, msgs, url = u.validate(user)
     r = {
-        'success': True,
-        # 'url': '/timeline/{}'.format(user.id)
-        'url': '/timeline'
+        'success': status,
+        'url': url,
+        'data': msgs
     }
-    if u.validate(user):
+    if status:
         log(user.username, '登录成功')
         session['user_id'] = user.id
-    else:
-        r['success'] = False
-        r['url'] = '/login'
     return jsonify(r)
 
 

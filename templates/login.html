@@ -21,37 +21,61 @@
     <!--<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
     <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
     <script src="../static/js/jquery-3.0.0.min.js"></script>
+    <script src="../static/js/api.js"></script>
+
     <script>
-        $(document).ready(function(){
-            var button = $('#id-button-submit');
-            button.on('click', function(){
+        var normalLogin = function(){
+            $('#id-button-submit').on('click', function(){
               var username = $('#id-text-username').val();
               var password = $('#id-text-password').val();
               var account = {
                 username: username,
                 password: password,
               };
-              var postData = JSON.stringify(account);
-              console.log('JSON格式的数据是',postData);
-              var request = {
-                url: '/login',
-                type: 'post',
-                contentType: 'application/json',
-                data: postData,
-                success: function(r) {
-                  if(r.success) {
-                    window.location.href = r.url;
-                  } else {
-                    window.location.href = r.url;
-                  }
-                }
+              var success = function (r) {
+                    log('login, ', r);
+                    if(r.success) {
+                        window.location.href = r.url
+                    } else {
+                        alert(r.data);
+                        window.location.href = r.url
+                    }
+                };
+                var error = function (err) {
+                    log(err);
+                };
+                vip.login(account, success, error);
+                })
+        };
+
+        var touristLogin = function(){
+            $('#id-button-tourist').on('click', function(){
+                var account = {
+                username: 'Tourist',
+                password: '111',
               };
-              $.ajax(request);
-            })
+              var success = function (r) {
+                    log('login, ', r);
+                    if(r.success) {
+                        window.location.href = r.url
+                    } else {
+                        alert(r.data);
+                        window.location.href = r.url
+                    }
+                };
+                var error = function (err) {
+                    log(err);
+                };
+                vip.login(account, success, error);
+                })};
+
+
+
+        $(document).ready(function(){
+            normalLogin();
+            touristLogin()
         })
     </script>
-
-
 </head>
 
 <body>
@@ -66,7 +90,7 @@
                 <input type="text" class="form-control" id="id-text-password" placeholder="Password">
                 <label class="checkbox">
                     <span class="pull-right">
-                        <a data-toggle="modal" href="#">游客登录</a>
+                        <button class="btn btn-success btn-sm" data-toggle="modal" id="id-button-tourist">游客登录</button>
                     </span>
                 </label>
                 <button class="btn btn-theme btn-block" id="id-button-submit" type="button">登录

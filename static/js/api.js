@@ -89,6 +89,11 @@ vip.todoAdd = function(form, success, error){
     var path = '/todo/add';
     this.post(path, form, success, error)
 };
+
+vip.login = function(form, success, error){
+    var path = '/login';
+    this.post(path, form, success, error)
+};
 //
 // vip.tweetAdd = function(form, success, error) {
 //     var url = '/api/tweet/add';

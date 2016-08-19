@@ -262,7 +262,7 @@ ul.top-menu > li > .logout {
 }
 
 ul.sidebar-menu, ul.sidebar-menu li ul.sub {
-    margin: -2px 0 0;
+    margin: -10px 0 0;
     padding: 0;
 }
 
