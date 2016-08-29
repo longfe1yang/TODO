@@ -80,8 +80,10 @@ vip.products = function(response) {
 //     this.get(path, response);
 // };
 // API articles
-vip.todos = function(response, id) {
-    var path = '/timeline/' + id ;
+
+
+vip.todos = function(response, user_id) {
+    var path = '/timeline/' + user_id ;
     this.get(path, response);
 };
 
