@@ -82,7 +82,7 @@ vip.products = function(response) {
 // API articles
 
 
-vip.todos = function(response, user_id) {
+vip.todoDeliver = function(response, user_id) {
     var path = '/timeline/' + user_id ;
     this.get(path, response);
 };

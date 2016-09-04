@@ -28,7 +28,7 @@ def current_user():
 
 @app.route('/')
 def index():
-    return redirect(url_for('login_view'))
+    return redirect(url_for('timeline_view'))
 
 
 @app.route('/login')
@@ -39,18 +39,21 @@ def login_view():
 @app.route('/login', methods=['POST'])
 def login():
     account = request.get_json()
-    log('account', account)
+    # log('account', account)
     u = User(account)
     user = User.query.filter_by(username=u.username).first()
-    log('user的id', user)
-    status, msgs, url = u.validate(user)
+    # log('user的id', user)
+    status, msgs = u.validate(user)
+    log('msgs', msgs)
     r = {
         'success': status,
-        'url': url,
-        'data': msgs
+        'data': msgs,
     }
+    # log('url', url)
     if status:
         log(user.username, '登录成功')
+        r['url'] = request.args.get('url', url_for('timeline_view'))
+        log('url是这个', r['url'])
         session['user_id'] = user.id
     return jsonify(r)
 
@@ -100,8 +103,11 @@ def timeline(user_id):
 
 @app.route('/timeline')
 def timeline_view():
-    u = current_user()
-    return render_template('timeline.html', user=u)
+    # u = current_user()
+    # log('timeline进入mark', u)
+    # 原本是将u传入jinja来请求json数据，现在不用了
+    # 因为user.id数据已经写入了html中
+    return render_template('timeline.html')
 
 
 @app.route('/todo/add', methods=['POST'])

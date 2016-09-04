@@ -1,5 +1,5 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import sql
 
 import time
@@ -20,7 +20,7 @@ class User(db.Model):
     password = db.Column(db.String())
     note = db.Column(db.String())
     sex = db.Column(db.String())
-    created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
+    created_time = db.Column(db.String())
 
     todos = db.relationship('Todo', backref='user')
 
@@ -30,6 +30,7 @@ class User(db.Model):
         self.password = form.get('password', '')
         self.sex = form.get('sex', '')
         self.note = form.get('note', '')
+        self.created_time = int(time.time())
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -70,6 +71,9 @@ class User(db.Model):
         elif not password_len:
             message = '密码长度必须大于等于 3'
             msgs.append(message)
+        else:
+            message = '注册成功'
+            msgs.append(message)
         status = valid_username and username_len and password_len
         return status, msgs
 
@@ -80,23 +84,23 @@ class User(db.Model):
             username_equals = self.username == user.username
             password_equals = self.password == user.password
             message = '登录成功'
-            url = '/timeline'
+            # url = '/timeline'
             status = username_equals and password_equals
             # return username_equals and password_equals
         else:
             # return False
             message = '请检查用户名或密码'
-            url = '/login'
+            # url = '/login'
         msgs.append(message)
 
-        return status, msgs, url
+        return status, msgs
 
 
 class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String())
-    created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
+    created_time = db.Column(db.String())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
